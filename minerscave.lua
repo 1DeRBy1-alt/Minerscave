@@ -131,7 +131,7 @@ local KillAuraMod = CombatWindow:AddModule("Kill Aura", "Attacks players inside 
 	Config.KillAura.Enabled = state
 end)
 KillAuraMod:AddCategory("Settings")
-KillAuraMod:AddSlider("Delay (Ticks)", 1, 60, 10, 1, function(val)
+KillAuraMod:AddSlider("Delay (Ticks)", 1, 60, 13, 1, function(val)
 	Config.KillAura.Delay = math.round(val)
 end)
 KillAuraMod:AddSlider("Range (Studs)", 5, 20, 16.5, 0.5, function(val)
