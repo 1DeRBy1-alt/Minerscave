@@ -37,6 +37,8 @@ local WorldWindow = Library:CreateWindow("World", UDim2.new(0.39, 0, 0.1, 0))
 local PlayerScripts = LocalPlayer:WaitForChild("PlayerScripts")
 local MainScript = PlayerScripts:WaitForChild("MainLocalScript")
 
+local env = getsenv(MainScript)
+
 local blocksFolder = Workspace:WaitForChild("Blocks")
 local fluidFolder = Workspace:WaitForChild("Fluid")
 
@@ -69,15 +71,15 @@ local Config = {
 
 local oldReqDamage
 local function hookDamageSystem()
-    if MainScript and typeof(MainScript.reqDamage) == "function" then
-        oldReqDamage = hookfunction(MainScript.reqDamage, function(amount, damageType)
+    if MainScript and typeof(env.reqDamage) == "function" then
+        oldReqDamage = hookfunction(env.reqDamage, function(amount, damageType)
             if Config.NoFall.Enabled and damageType == "fall" then
                 return
             end
             return oldReqDamage(amount, damageType)
         end)
     else
-        warn("MainScript.reqDamage not found. NoFall will not work")
+        warn("reqDamage not found. NoFall will not work")
     end
 end
 task.spawn(hookDamageSystem)
@@ -147,10 +149,10 @@ local KillAuraMod = CombatWindow:AddModule("Kill Aura", "Attacks players inside 
     Config.KillAura.Enabled = state
 end)
 KillAuraMod:AddCategory("Settings")
-KillAuraMod:AddSlider("Delay (Ticks)", 1, 60, 13, function(val)
+KillAuraMod:AddSlider("Delay (Ticks)", 1, 60, 13, 1, function(val)
     Config.KillAura.Delay = math.round(val)
 end)
-KillAuraMod:AddSlider("Range (Studs)", 5, 20, 16.5, function(val)
+KillAuraMod:AddSlider("Range (Studs)", 5, 20, 16.5, 0.5, function(val)
     Config.KillAura.Range = val
 end)
 
@@ -158,10 +160,10 @@ local MobAuraMod = CombatWindow:AddModule("Mob Aura", "Attacks mobs/entities ins
     Config.MobAura.Enabled = state
 end)
 MobAuraMod:AddCategory("Settings")
-MobAuraMod:AddSlider("Delay (Ticks)", 1, 60, 13, function(val)
+MobAuraMod:AddSlider("Delay (Ticks)", 1, 60, 13, 1, function(val)
     Config.MobAura.Delay = math.round(val)
 end)
-MobAuraMod:AddSlider("Range (Studs)", 5, 20, 16.5, function(val)
+MobAuraMod:AddSlider("Range (Studs)", 5, 20, 16.5, 0.5, function(val)
     Config.MobAura.Range = val
 end)
 
@@ -181,7 +183,7 @@ local ScaffoldMod = WorldWindow:AddModule("Scaffold", "Places blocks underneath 
     Config.Scaffold.Enabled = state
 end)
 ScaffoldMod:AddCategory("Settings")
-ScaffoldMod:AddSlider("Fill Range", 1, 5, 1, function(val)
+ScaffoldMod:AddSlider("Fill Range", 1, 5, 1, 1, function(val)
     Config.Scaffold.Range = math.round(val)
 end)
 
@@ -193,7 +195,7 @@ local NukerMod = WorldWindow:AddModule("Nuker", "Breaks blocks around you", func
     Config.Nuker.Enabled = state
 end)
 NukerMod:AddCategory("Settings")
-NukerMod:AddSlider("Range", 1, 5, 3, function(val)
+NukerMod:AddSlider("Range", 1, 5, 3, 1, function(val)
     Config.Nuker.Range = math.round(val)
 end)
 
