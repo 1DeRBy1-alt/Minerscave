@@ -60,7 +60,7 @@ local BLOCKSIZE = Globals.blocksize
 local Config = {
     KillAura = { Enabled = false, Delay = 10, Range = 16.5 },
     MobAura = { Enabled = false, Delay = 10, Range = 16.5 },
-    Triggerbot = { Enabled = false, Delay = 0.1 },
+    Triggerbot = { Enabled = false, Delay = 0.25 },
     Scaffold = { Enabled = false, Range = 1 },
     Nuker = { Enabled = false, Range = 3 },
     FastBreak = { Enabled = false },
@@ -364,7 +364,7 @@ task.spawn(function()
                     M_World.placeBlock(t.x, t.y, t.z, t.chunk, 5, blockId)
                     PlaceBlockRemote:InvokeServer(t.x, t.y, t.z, blockSlot, 5)
                 end
-                task.wait(0.01)
+                task.wait()
                 scaffoldDebounce = false
             end)
         end
@@ -414,7 +414,7 @@ end)
 
 -- FastBreak Loop
 task.spawn(function()
-    while task.wait(0.01) do
+    while task.wait(0.05) do
         if Config.FastBreak.Enabled then
             AcceptBreakBlockRemote:InvokeServer()
         end
