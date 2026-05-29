@@ -55,7 +55,7 @@ local PlaceBlockRemote = GameRemotes:WaitForChild("PlaceBlock")
 local BreakBlockRemote = GameRemotes:WaitForChild("BreakBlock")
 local AcceptBreakBlockRemote = GameRemotes:WaitForChild("AcceptBreakBlock")
 
-local BLOCKSIZE = Globals.blocksize
+local BLOCKSIZE = 3
 
 local Config = {
     KillAura = { Enabled = false, Delay = 10, Range = 16.5 },
@@ -69,6 +69,7 @@ local Config = {
     AirPlace = { Enabled = false, Range = 6 }
 }
 
+-- No Fall
 local oldReqDamage
 local function hookDamageSystem()
     if MainScript and typeof(env.reqDamage) == "function" then
@@ -207,7 +208,7 @@ AirPlaceMod:AddSlider("Range", 1, 20, 6, function(val)
     Config.AirPlace.Range = math.round(val)
 end)
 
--- Kill Aura Loop
+-- Kill Aura
 task.spawn(function()
     local auraTicks = 0
     local lastAuraAttack = 0
@@ -248,7 +249,7 @@ task.spawn(function()
     end
 end)
 
--- Mob Aura Loop
+-- Mob Aura
 task.spawn(function()
     local mobAuraTicks = 0
     local lastMobAttack = 0
@@ -297,7 +298,7 @@ task.spawn(function()
     end
 end)
 
--- Triggerbot Loop
+-- Triggerbot
 task.spawn(function()
     while task.wait(Config.Triggerbot.Delay) do
         if not Config.Triggerbot.Enabled then continue end
@@ -324,7 +325,7 @@ task.spawn(function()
     end
 end)
 
--- Scaffold Loop
+-- Scaffold
 task.spawn(function()
     local scaffoldDebounce = false
     local scaffoldConnection
@@ -362,7 +363,7 @@ task.spawn(function()
             task.spawn(function()
                 for _, t in ipairs(targets) do
                     M_World.placeBlock(t.x, t.y, t.z, t.chunk, 5, blockId)
-                    PlaceBlockRemote:InvokeServer(t.x, t.y, t.z, blockSlot, 5)
+                    local serverPlaced = PlaceBlockRemote:InvokeServer(t.x, t.y, t.z, blockSlot, 5)
                 end
                 task.wait()
                 scaffoldDebounce = false
@@ -371,7 +372,7 @@ task.spawn(function()
     end)
 end)
 
--- Nuker Loop
+-- Nuker
 task.spawn(function()
     local nukerDebounce = false
     local nukerConnection
@@ -380,7 +381,7 @@ task.spawn(function()
         
         local char = LocalPlayer.Character
         local root = char and char:FindFirstChild("HumanoidRootPart")
-        if not root then end
+        if not root then return end
         
         local px, py, pz = worldToBlock(root.Position.X, root.Position.Y - 1, root.Position.Z)
         local range = Config.Nuker.Range
@@ -412,7 +413,7 @@ task.spawn(function()
     end)
 end)
 
--- FastBreak Loop
+-- FastBreak
 task.spawn(function()
     while task.wait(0.05) do
         if Config.FastBreak.Enabled then
@@ -421,7 +422,7 @@ task.spawn(function()
     end
 end)
 
--- Jesus Loop
+-- Jesus
 task.spawn(function()
     while task.wait(0.25) do
         if Config.Jesus.Enabled then
@@ -432,7 +433,7 @@ task.spawn(function()
     end
 end)
 
--- Air Place Loop
+-- Air Place
 task.spawn(function()
     local lastPlace = 0
     local COOLDOWN = 0.12
