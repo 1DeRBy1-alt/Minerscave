@@ -10,7 +10,7 @@ local UIS = game:GetService("UserInputService")
 
 local LocalPlayer = Players.LocalPlayer
 
--- Clean Anti-Kick Hook
+-- Anti-Kick
 if hookmetamethod then
     local oldhmmi
     local oldhmmnc
@@ -28,7 +28,6 @@ if hookmetamethod then
     end)
 end
 
--- Import UI Library directly
 local Library = loadstring(game:HttpGet("https://gist.githubusercontent.com/1DeRBy1-alt/2fa6f5c2a7b61467130591d43ba9a6bd/raw/meteorUI.lua"))()
 
 local CombatWindow = Library:CreateWindow("Combat", UDim2.new(0.05, 0, 0.1, 0))
@@ -422,7 +421,7 @@ end)
 
 -- Jesus Loop
 task.spawn(function()
-    while task.wait(0.5) do
+    while task.wait(0.25) do
         if Config.Jesus.Enabled then
             setCollision(true)
         else
